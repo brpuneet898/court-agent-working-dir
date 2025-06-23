@@ -25,6 +25,33 @@ p {
     text-align: center;
 }
 
+.form-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-section label,
+.form-section select,
+.form-section input {
+    margin: 10px;
+    font-size: 16px;
+    padding: 6px 10px;
+}
+
+.form-section button {
+    padding: 8px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.form-section button:hover {
+    background-color: #0056b3;
+}
+
 .graph-section,
 .metrics-section,
 .silhouette-plot,

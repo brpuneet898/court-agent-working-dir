@@ -9,7 +9,34 @@
 <body>
     <div class="container">
         <h1>Similarity Network on SEBI Orders</h1>
-        <p>This visualization is based on "Monetary Penalty Imposed"</p>
+
+        <!-- 🧾 FORM -->
+        <form method="POST" class="form-section">
+            <label for="field">Select Field:</label>
+            <select name="field" id="field">
+                {% for option in [
+                    "Monetary Penalty Imposed",
+                    "Order Type",
+                    "Type of Insider Trading",
+                    "Case Name",
+                    "Penalty Criteria",
+                    "Judgment Criteria",
+                    "Contextual Metadeta",
+                    "Non-monetary Penalty",
+                    "PIT Version"
+                ] %}
+                    <option value="{{ option }}" {% if option == selected_field %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="threshold">Similarity Threshold (0 to 1):</label>
+            <input type="number" name="threshold" id="threshold" step="0.01" min="0" max="1" value="{{ threshold }}">
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Dynamic Info -->
+        <p>This visualization is based on <b>"{{ selected_field }}"</b></p>
 
         <div class="graph-section">
             {{ graph_html | safe }}
