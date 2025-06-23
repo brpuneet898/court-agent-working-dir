@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Similarity Network on SEBI Orders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Similarity Network on SEBI Orders</h1>
+        <p>Below is a network visualization of SEBI cases based on the "Monetary Penalty Imposed".</p>
+        <div class="graph-container">
+            {{ graph_html | safe }}
+        </div>
+    </div>
+</body>
+</html>

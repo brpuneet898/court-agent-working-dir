@@ -1,0 +1,8 @@
+Flask
+pymongo
+pandas
+sklearn
+numpy
+networkx
+matplotlib
+plotly
