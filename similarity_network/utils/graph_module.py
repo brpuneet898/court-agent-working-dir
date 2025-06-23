@@ -9,6 +9,7 @@ def fetch_documents():
     documents = list(collection.find({}))
     return pd.DataFrame(documents)
 
+
 def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
     import random
     from sklearn.feature_extraction.text import TfidfVectorizer
@@ -17,10 +18,9 @@ def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
     from sklearn.preprocessing import LabelEncoder
     import networkx as nx
     import plotly.graph_objects as go
-    import matplotlib.colors as mcolors
+    import plotly.express as px
     import plotly.colors
     from sklearn.cluster import KMeans
-    import matplotlib.pyplot as plt
 
     values = df[field].fillna("").astype(str)
     vectorizer = TfidfVectorizer()
@@ -35,16 +35,10 @@ def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
         score = silhouette_score(vectors.toarray(), cluster_labels, metric='cosine')
         sil_scores.append(score)
 
-    # Plot silhouette scores
-    plt.figure(figsize=(8, 4))
-    plt.bar(K_range, sil_scores, color='skyblue')
-    plt.xlabel('Number of Clusters (k)')
-    plt.ylabel('Silhouette Score')
-    plt.title('Silhouette Scores for k = 2 to 10')
-    plt.xticks(K_range)
-    plt.grid(axis='y', linestyle='--', alpha=0.6)
-    plt.tight_layout()
-    plt.show()
+    # Convert Silhouette Plot to Plotly
+    sil_fig = px.bar(x=list(K_range), y=sil_scores, labels={'x': 'Number of Clusters (k)', 'y': 'Silhouette Score'})
+    sil_fig.update_layout(title='Silhouette Scores for k = 2 to 10', template='plotly_white')
+    silhouette_plot_html = sil_fig.to_html(full_html=False)
 
     cosine_sim = cosine_similarity(vectors)
 
@@ -129,7 +123,6 @@ def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
         mode='lines'
     )
 
-    # --- Legend traces ---
     legend_traces = []
     for cid in unique_cluster_ids:
         label = cluster_labels[cid]
@@ -143,7 +136,6 @@ def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
             name=f"{label} ({size} nodes)"
         ))
 
-    # --- Plot ---
     fig = go.Figure(data=[edge_trace, node_trace] + legend_traces,
                     layout=go.Layout(
                         title=f'Similarity Network for "{field}" (Threshold: {threshold})',
@@ -154,20 +146,20 @@ def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
                         yaxis=dict(title='UMAP-Dim 2', showgrid=False, zeroline=False)
                     ))
 
-    # --- Silhouette Score ---
     try:
         labels = df[field].fillna("").astype(str).tolist()
         label_encoder = LabelEncoder()
         encoded_labels = label_encoder.fit_transform(labels)
         sil_score = silhouette_score(vectors.toarray(), encoded_labels, metric='cosine')
-        print(f"\nSilhouette Score for '{field}' clustering: {sil_score:.4f}")
+        silhouette_score_text = f"Silhouette Score (label-based): {sil_score:.4f}"
     except ValueError as e:
-        print(f"Silhouette Score could not be computed: {e}")
+        silhouette_score_text = f"Silhouette Score could not be computed: {e}"
 
-    print("\nCluster Summary (Raw Counts):")
+    cluster_summary_html = "<h3>Cluster Summary</h3><ul>"
     for cluster_id, nodes in enumerate(clusters):
         label = cluster_labels[cluster_id]
         count = len(nodes)
-        print(f"Cluster {cluster_id}: Label = '{label}', n = {count}")
+        cluster_summary_html += f"<li><b>Cluster {cluster_id}:</b> Label = '{label}', Size = {count}</li>"
+    cluster_summary_html += "</ul>"
 
-    return fig.to_html(full_html=False)  # This line replaces `fig.show()` for web embedding
+    return fig.to_html(full_html=False), silhouette_plot_html, silhouette_score_text, cluster_summary_html

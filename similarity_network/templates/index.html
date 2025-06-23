@@ -9,9 +9,23 @@
 <body>
     <div class="container">
         <h1>Similarity Network on SEBI Orders</h1>
-        <p>Below is a network visualization of SEBI cases based on the "Monetary Penalty Imposed".</p>
-        <div class="graph-container">
+        <p>This visualization is based on "Monetary Penalty Imposed"</p>
+
+        <div class="graph-section">
             {{ graph_html | safe }}
+        </div>
+
+        <div class="metrics-section">
+            <h2>Silhouette Score</h2>
+            <p>{{ sil_score_text }}</p>
+        </div>
+
+        <div class="silhouette-plot">
+            {{ silhouette_plot_html | safe }}
+        </div>
+
+        <div class="cluster-summary">
+            {{ cluster_summary_html | safe }}
         </div>
     </div>
 </body>

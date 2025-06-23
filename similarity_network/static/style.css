@@ -12,20 +12,27 @@ body {
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
 }
 
-h1 {
+h1, h2 {
     color: #333333;
-    margin-bottom: 10px;
+    text-align: center;
 }
 
 p {
     font-size: 16px;
-    color: #666666;
+    color: #555;
+    text-align: center;
 }
 
-.graph-container {
-    margin-top: 30px;
-    overflow-x: auto;
+.graph-section,
+.metrics-section,
+.silhouette-plot,
+.cluster-summary {
+    margin-top: 40px;
+}
+
+.cluster-summary ul {
+    list-style-type: square;
+    padding-left: 40px;
 }
