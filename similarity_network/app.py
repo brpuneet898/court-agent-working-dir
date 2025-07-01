@@ -15,7 +15,7 @@ def index():
         selected_field = request.form.get('field')
         threshold = float(request.form.get('threshold'))
 
-    graph_html, silhouette_plot_html, sil_score_text, cluster_summary_html = compute_similarity_and_visualize_plotly(
+    graph_html, silhouette_plot_html, sil_score_text, cluster_summary_html, optimal_k = compute_similarity_and_visualize_plotly(
         df, field=selected_field, threshold=threshold)
 
     return render_template('index.html',
@@ -24,7 +24,8 @@ def index():
                            sil_score_text=sil_score_text,
                            cluster_summary_html=cluster_summary_html,
                            selected_field=selected_field,
-                           threshold=threshold)
+                           threshold=threshold,
+                           optimal_k=optimal_k)
 
 if __name__ == '__main__':
     app.run(debug=True)

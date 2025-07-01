@@ -27,13 +27,15 @@ def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
     vectors = vectorizer.fit_transform(values)
 
     sil_scores = []
-    K_range = range(2, 11)
+    K_range = range(2, 21)
 
     for k in K_range:
         kmeans = KMeans(n_clusters=k, random_state=42, n_init='auto')
         cluster_labels = kmeans.fit_predict(vectors.toarray())
         score = silhouette_score(vectors.toarray(), cluster_labels, metric='cosine')
         sil_scores.append(score)
+
+    optimal_k = K_range[sil_scores.index(max(sil_scores))]
 
     # Convert Silhouette Plot to Plotly
     sil_fig = px.bar(x=list(K_range), y=sil_scores, labels={'x': 'Number of Clusters (k)', 'y': 'Silhouette Score'})
@@ -162,4 +164,4 @@ def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
         cluster_summary_html += f"<li><b>Cluster {cluster_id}:</b> Label = '{label}', Size = {count}</li>"
     cluster_summary_html += "</ul>"
 
-    return fig.to_html(full_html=False), silhouette_plot_html, silhouette_score_text, cluster_summary_html
+    return fig.to_html(full_html=False), silhouette_plot_html, silhouette_score_text, cluster_summary_html, optimal_k
