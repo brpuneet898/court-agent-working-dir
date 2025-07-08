@@ -1,13 +1,5 @@
 **Document Title:** Standard Operating Procedure (SOP) for Generating JSON from PDFs using Gemini API Calls
 
-**Document Number:** SOP-GEMINI-001  
-**Version:** 1.0  
-**Effective Date:** July 8, 2025  
-**Prepared by:** [Your Team Name]  
-**Approved by:** [Approver Name]
-
----
-
 ## 1. Purpose
 This SOP describes the standardized process for using the `Gemini_JSON.ipynb` Jupyter Notebook to convert a collection of PDF documents (provided as a ZIP file) into structured JSON outputs by leveraging the Gemini API. The procedure ensures consistent, reliable, and reproducible results for all users.
 
@@ -15,16 +7,11 @@ This SOP describes the standardized process for using the `Gemini_JSON.ipynb` Ju
 This document applies to all team members and external collaborators who need to process PDF files into JSON format using the Gemini API. It covers environment setup, input preparation, execution of the notebook, validation of outputs, and troubleshooting.
 
 ## 3. Definitions
-- **Gemini API:** A hypothetical API service used to extract and structure data from PDF documents into JSON format.
+- **Gemini API:** An API service used to extract and structure data from PDF documents into JSON format.
 - **Notebook:** The Jupyter Notebook file `Gemini_JSON.ipynb` containing code and instructions.
 - **ZIP Archive:** A compressed file containing one or more PDF documents.
 
-## 4. Roles and Responsibilities
-- **Operator:** Responsible for executing the notebook, monitoring progress, and validating outputs.
-- **Maintainer:** Responsible for updating the notebook, dependencies, and this SOP as needed.
-- **Approver:** Reviews and approves revisions to this document.
-
-## 5. Prerequisites
+## 4. Prerequisites
 1. **System Requirements:**
    - Operating System: Windows, macOS, or Linux  
    - Python 3.8 or higher  
@@ -42,9 +29,9 @@ This document applies to all team members and external collaborators who need to
      GEMINI_API_KEY=your_api_key_here
      ```
 
-## 6. Procedure
+## 5. Procedure
 
-### 6.1. Environment Setup
+### 5.1. Environment Setup
 1. **Clone Repository or Obtain Files:**
    - Download or clone the project directory containing `Gemini_JSON.ipynb` and `requirements.txt`.  
 2. **Create a Virtual Environment:**
@@ -60,13 +47,13 @@ This document applies to all team members and external collaborators who need to
 4. **Configure API Credentials:**
    - Ensure the `.env` file is present and correctly populated (see Section 5.4).
 
-### 6.2. Preparing Input Files
+### 5.2. Preparing Input Files
 1. **Locate ZIP Archive:**
    - Place the ZIP file (e.g., `pdf_documents.zip`) in the working directory.  
 2. **Unzip the Archive:**
    - The notebook will handle unzipping automatically, but verify that PDFs are extracted into a folder named `pdfs/`.
 
-### 6.3. Executing the Notebook
+### 5.3. Executing the Notebook
 1. **Launch Jupyter Notebook:**
    ```bash
    jupyter notebook Gemini_JSON.ipynb
@@ -81,7 +68,7 @@ This document applies to all team members and external collaborators who need to
 3. **Monitor for Errors:**
    - Check console output for any failed API calls or file I/O errors.
 
-### 6.4. Validating Outputs
+### 5.4. Validating Outputs
 1. **Output Directory:**
    - Confirm that an `output/` folder exists and contains one `.json` file per PDF.  
 2. **Schema Compliance:**
@@ -89,10 +76,11 @@ This document applies to all team members and external collaborators who need to
 3. **Spot-Check Samples:**
    - Open a few JSON files to verify correct extraction of key fields.
 
-### 6.5. Troubleshooting
+### 5.5. Troubleshooting
 - **Failed API Request:**
   - Check network connectivity and verify API endpoint URL.  
-  - Confirm that the API key in `.env` is valid and not expired.  
+  - Confirm that the API key in `.env` is valid and not expired.
+  - Confirm that API call rate are not breaching the limits set by the provider. 
 - **Missing PDFs after Unzip:**
   - Ensure the ZIP file is not corrupted and contains PDFs at the root level.  
 - **Permission Errors:**
