@@ -1,0 +1,6 @@
+google-genai
+scikit-learn
+PyMuPDF
+numpy
+matplotlib
+torch
