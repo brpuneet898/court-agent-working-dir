@@ -40,4 +40,6 @@ Replace `'sample.json'` with your actual sample file name if different.
 
 ---
 
-For more details, see the code comments and individual
+For more details, see the code comments.
+
+**Note:** A 200 sample dataset is present in the `./dataset/sample_insider_trading_data.csv` file. The full dataset can be shared on request. Please contact the project maintainers for access.
