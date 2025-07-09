@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file, after_this_request
+import os
 from utils.graph_module import fetch_documents, compute_similarity_and_visualize_plotly
 
 app = Flask(__name__)
@@ -26,6 +27,21 @@ def index():
                            selected_field=selected_field,
                            threshold=threshold,
                            optimal_k=optimal_k)
+
+@app.route('/download-csv')
+def download_csv():
+    csv_path = os.path.join(os.path.dirname(__file__), '..', 'dataset', 'sample_insider_trading_data.csv')
+    if os.path.exists(csv_path):
+        @after_this_request
+        def remove_file(response):
+            try:
+                os.remove(csv_path)
+            except Exception as e:
+                app.logger.error(f"Error deleting file: {e}")
+            return response
+        return send_file(csv_path, as_attachment=True)
+    else:
+        return "File not found or already downloaded.", 404
 
 if __name__ == '__main__':
     app.run(debug=True)

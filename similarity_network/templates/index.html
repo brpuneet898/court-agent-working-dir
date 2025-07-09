@@ -55,6 +55,13 @@
         <div class="cluster-summary">
             {{ cluster_summary_html | safe }}
         </div>
+
+        <div class="download-section">
+            <form action="{{ url_for('download_csv') }}" method="get">
+                <button type="submit" class="download-btn">Download CSV Dataset</button>
+            </form>
+        </div>
+
     </div>
 </body>
 </html>
