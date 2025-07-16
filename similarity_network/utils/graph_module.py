@@ -5,7 +5,7 @@ def fetch_documents():
     mongo_uri = "mongodb+srv://ns24z459:SEBI_Mongo_123@sebi.hb8ouni.mongodb.net/?retryWrites=true&w=majority"
     client = MongoClient(mongo_uri)
     db = client['SEBI']
-    collection = db['InsiderTrading_1']
+    collection = db['Insider_1703']  
     documents = list(collection.find({}))
     return pd.DataFrame(documents)
 
@@ -27,7 +27,7 @@ def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
     vectors = vectorizer.fit_transform(values)
 
     sil_scores = []
-    K_range = range(2, 21)
+    K_range = range(2, 11)
 
     for k in K_range:
         kmeans = KMeans(n_clusters=k, random_state=42, n_init='auto')
