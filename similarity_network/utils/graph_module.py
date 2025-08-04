@@ -1,26 +1,46 @@
 import pandas as pd
-from pymongo import MongoClient
+from pymongo import MongoClient, errors
+import os
+import json
+from pathlib import Path
+import random
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics import silhouette_score
+from sklearn.preprocessing import LabelEncoder
+import networkx as nx
+import plotly.graph_objects as go
+import plotly.express as px
+import plotly.colors
+from sklearn.cluster import KMeans
 
 def fetch_documents():
-    mongo_uri = "mongodb+srv://ns24z459:SEBI_Mongo_123@sebi.hb8ouni.mongodb.net/?retryWrites=true&w=majority"
-    client = MongoClient(mongo_uri)
-    db = client['SEBI']
-    collection = db['Insider_1703']  
-    documents = list(collection.find({}))
-    return pd.DataFrame(documents)
+    try: 
+        mongo_uri = "mongodb+srv://ns24z459:SEBI_Mongo_123@sebi.hb8ouni.mongodb.net/?retryWrites=true&w=majority"
+        client = MongoClient(mongo_uri)
+        db = client['SEBI']
+        collection = db['Insider_1703']  
+        documents = list(collection.find({}))
+        return pd.DataFrame(documents)
+    
+    except errors.PyMongoError as e:
+        base_dir = Path(__file__).resolve().parents[2]
+        json_path = base_dir/"dataset"/"SEBI_Insider_1703.json"
+        print(f"[Info] Falling back to JSON file at: {json_path}")
+        
+        if not os.path.exists(json_path):
+            raise FileNotFoundError(
+                f"Could not fetch from MongoDB and JSON file not found at '{json_path}'"
+            ) from e
+        
+        with open(json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        # Expecting the JSON to be a list of objects; if it's a dict with some key, adjust accordingly.
+        return pd.DataFrame(data)
 
 
 def compute_similarity_and_visualize_plotly(df, field, threshold=0.5):
-    import random
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.metrics.pairwise import cosine_similarity
-    from sklearn.metrics import silhouette_score
-    from sklearn.preprocessing import LabelEncoder
-    import networkx as nx
-    import plotly.graph_objects as go
-    import plotly.express as px
-    import plotly.colors
-    from sklearn.cluster import KMeans
 
     values = df[field].fillna("").astype(str)
     vectorizer = TfidfVectorizer()
