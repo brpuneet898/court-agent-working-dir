@@ -1,2 +1,4 @@
 ./env/
 ./similarity_network/utils/__pycache__/
+.venv/
+venv/
